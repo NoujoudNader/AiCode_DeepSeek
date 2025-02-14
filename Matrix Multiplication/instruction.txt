@@ -1,0 +1,8 @@
+gfortran -fopenmp -O3 -o matmul matmul.f90 && OMP_NUM_THREADS=4 ./matmul
+
+# Start Julia with multiple threads (adjust 4 to your core count)
+JULIA_NUM_THREADS=4 julia matrix_mult.jl
+
+python matrix_mult.py
+
+g++ -fopenmp -O3 -o matrix_mult matrix_mult.cpp && ./matrix_mult
