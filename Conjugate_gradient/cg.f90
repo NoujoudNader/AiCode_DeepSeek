@@ -5,7 +5,8 @@ program conjugate_gradient
   real(8) :: x(n), r(n), p(n), Ap(n)
   real(8) :: rsold, rsnew, alpha, beta, tol
   integer :: iter, max_iter = 1000
-
+  real(8)  :: x_exact(n) = [13.0d0/28.0d0, 6.0d0/7.0d0, 27.0d0/28.0d0]
+  
   ! Initialize solution vector
   x = 0.0d0
 
@@ -47,7 +48,6 @@ program conjugate_gradient
   print *, "Residual norm: ", sqrt(dot_product(r, r))
 
   ! Exact solution (precomputed)
-  real(8) :: x_exact(n) = [13.0d0/28.0d0, 6.0d0/7.0d0, 27.0d0/28.0d0]
   print *, "Exact solution: ", x_exact
   print *, "Error norm: ", sqrt(dot_product(x - x_exact, x - x_exact))
 
