@@ -10,7 +10,7 @@ Size    Block  Method   Time (s)   GFLOPS     Valid
 ... (continues for all sizes and configurations)
 
 
-Fortran:
+Fortran File:
 gfortran -O3 -fopenmp -march=native -o dgemm_parallel dgemm_parallel.f90
 
 Matrix Size | Block Size | Method   | Time (s) | GFLOPS   | Valid
@@ -21,3 +21,17 @@ Matrix Size | Block Size | Method   | Time (s) | GFLOPS   | Valid
       1024 |         0 | Naive     |   142.332 |    15.21 |  T
       2048 |       128 | Optimized |    25.774 |  1332.45 |  T
 ------------------------------------------------------------
+
+Julia File:
+JULIA_NUM_THREADS=4 julia dgemm_benchmark.jl
+
+| Size | Block | Method    | Time (s) | GFLOPS  | Valid |
+|------|-------|-----------|----------|---------|-------|
+| 512 | - | BLAS | 0.045 | 240.15 | true |
+| 512 | 32 | Optimized | 0.152 | 71.32 | true |
+| 512 | 64 | Optimized | 0.138 | 78.64 | true |
+| 512 | 128 | Optimized | 0.145 | 74.89 | true |
+| 512 | - | Naive | 1.452 | 7.42 | true |
+| 1024 | - | BLAS | 0.342 | 623.82 | true |
+| 1024 | 32 | Optimized | 1.214 | 175.45 | true |
+| ... 
