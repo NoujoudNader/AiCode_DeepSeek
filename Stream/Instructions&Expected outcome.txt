@@ -1,0 +1,19 @@
+Cpp
+# Compile with OpenMP and architecture-specific optimizations
+g++ -O3 -march=native -fopenmp -std=c++17 stream_triad.cpp -o stream_triad
+
+# Set thread affinity (Linux example)
+export OMP_NUM_THREADS=$(nproc)
+export OMP_PROC_BIND=close
+export OMP_PLACES=cores
+
+# Run the benchmark
+./stream_triad
+
+Output:
+STREAM Triad Benchmark
+Array size: 134217728 elements (1073.74 MB each)
+Threads: 16
+Time: 0.045723 seconds
+Bandwidth: 84.3162 GB/s
+First 3 elements: [7, 7, 7]
