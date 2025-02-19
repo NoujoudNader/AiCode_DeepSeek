@@ -17,3 +17,17 @@ Threads: 16
 Time: 0.045723 seconds
 Bandwidth: 84.3162 GB/s
 First 3 elements: [7, 7, 7]
+
+Fortran:
+# Compile with OpenCoarrays (GCC example):
+caf -O3 -march=native -fopenmp -fcoarray=lib stream_triad.f90 -o stream_triad
+
+# Run with 4 processes (adjust for your system):
+cafrun -n 4 ./stream_triad
+
+STREAM Triad Benchmark Results:
+ Number of images: 4
+ Array size: 134217728 elements per array
+ Total time:  0.047 seconds
+ Bandwidth:  67.2 GB/s
+ Sample values:     7.0    7.0    7.0
