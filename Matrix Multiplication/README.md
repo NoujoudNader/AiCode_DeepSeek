@@ -50,14 +50,6 @@ g++ -fopenmp -O3 -o matrix_mult matrix_mult.cpp
 
 ## Configuration Notes
 1. Replace `<NUM_THREADS>` with your core count (Fortran/Julia)
-2. Adjust matrix sizes in source files according to available memory
-3. OpenMP configurations (Fortran/C++):
-   - Set `OMP_NUM_THREADS` for thread count
-   - Add `OMP_PROC_BIND=close` for better thread affinity
-4. For large matrices, consider:
-   - Using optimized BLAS libraries
-   - Enabling huge page allocations
-   - NUMA-aware memory allocation
 
 ## Dependencies
 - Fortran/C++: OpenMP runtime
