@@ -1,6 +1,7 @@
 import numpy as np
 import multiprocessing as mp
 from time import time
+import sys
 
 def parallel_matrix_mult(A, B, num_workers=None):
     """
@@ -35,7 +36,7 @@ def validate(C1, C2, atol=1e-6):
 
 if __name__ == "__main__":
     # Matrix dimensions
-    m, n, p = 512, 512, 512
+    m, n, p = 10000, 10000, 10000
     
     # Generate random matrices
     A = np.random.randn(m, n)
@@ -43,7 +44,7 @@ if __name__ == "__main__":
     
     # Parallel multiplication
     start = time()
-    C_parallel = parallel_matrix_mult(A, B, num_workers=mp.cpu_count())
+    C_parallel = parallel_matrix_mult(A, B, num_workers=int(sys.argv[1]))
     parallel_time = time() - start
     print(f"Parallel time: {parallel_time:.4f}s")
     

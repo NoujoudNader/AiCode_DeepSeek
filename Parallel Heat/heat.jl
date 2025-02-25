@@ -1,12 +1,13 @@
 using Base.Threads
 using Plots
 using LinearAlgebra
+using Printf
 
 function solve_heat_parallel()
     # Parameters
     α = 0.1     # Thermal diffusivity
-    L = 1.0     # Domain length
-    n = 100     # Spatial points
+    L = 100000.0     # Domain length
+    n = 1000000     # Spatial points
     h = L / (n - 1)
     T = 0.1     # Total time
     dt = T / 1000

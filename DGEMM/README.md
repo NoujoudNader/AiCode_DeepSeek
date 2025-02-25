@@ -1,85 +1,70 @@
-# DGEMM Benchmark Implementations
+## Fortran
 
-Parallel matrix multiplication (DGEMM) implementations with different optimization strategies.
-
-## Fortran Implementation
-
-### Compilation
 ```bash
-gfortran -O3 -fopenmp -march=native -o dgemm_parallel dgemm_parallel.f90
+dgemm.f90:106:16:
+
+  106 |         valid = validate(matmul(A,B), C_opt, 1e-6)
+      |                1
+Error: Type mismatch in argument ‘tolerance’ at (1); passed REAL(4) to REAL(8)
+dgemm.f90:117:20:
+
+  117 |             valid = validate(matmul(A,B), C_naive, 1e-6)
+      |                    1
 ```
 
-### Execution
+## Python
+
 ```bash
-OMP_NUM_THREADS=<NUM_THREADS> ./dgemm_parallel
+Traceback (most recent call last):
+  File "/home/diehlpk/git/AiCode_DeepSeek/DGEMM/dgemm.py", line 110, in <module>
+    benchmark(
+  File "/home/diehlpk/git/AiCode_DeepSeek/DGEMM/dgemm.py", line 66, in benchmark
+    dgemm_parallel(A, B, C_parallel)
+  File "/home/diehlpk/.local/lib/python3.9/site-packages/numba/core/dispatcher.py", line 485, in _compile_for_args
+    error_rewrite(e, 'unsupported_error')
+  File "/home/diehlpk/.local/lib/python3.9/site-packages/numba/core/dispatcher.py", line 423, in error_rewrite
+    raise e.with_traceback(None)
+numba.core.errors.UnsupportedRewriteError: Failed in nopython mode pipeline (step: convert to parfors)
+Only constant step size is supported for prange
+
+File "dgemm.py", line 22:
+def dgemm_parallel(A, B, C, alpha=1.0, beta=0.0, block_size=64):
+    <source elided>
+    # Blocked matrix multiplication with parallelization
+    for ii in nb.prange(0, n, block_size):
 ```
-### Execution
+
+## Julia
+
 ```bash
-Matrix Size | Block Size | Method   | Time (s) | GFLOPS   | Valid
-------------------------------------------------------------
-       512 |        32 | Optimized |     0.452 |   118.32 |  T
-       512 |         0 | Naive     |    12.452 |     4.31 |  T
-      1024 |        64 | Optimized |     3.401 |   623.12 |  T
-      1024 |         0 | Naive     |   142.332 |    15.21 |  T
-      2048 |       128 | Optimized |    25.774 |  1332.45 |  T
-------------------------------------------------------------
+ERROR: LoadError: UndefVarError: `A` not defined in `Main`
+Stacktrace:
+  [1] var"##core#244"()
+    @ Main ~/.julia/packages/BenchmarkTools/1i1mY/src/execution.jl:598
+  [2] var"##sample#245"(::Tuple{}, __params::BenchmarkTools.Parameters)
+    @ Main ~/.julia/packages/BenchmarkTools/1i1mY/src/execution.jl:607
+  [3] _lineartrial(b::BenchmarkTools.Benchmark, p::BenchmarkTools.Parameters; maxevals::Int64, kwargs::@Kwargs{})
+    @ BenchmarkTools ~/.julia/packages/BenchmarkTools/1i1mY/src/execution.jl:186
+  [4] _lineartrial(b::BenchmarkTools.Benchmark, p::BenchmarkTools.Parameters)
+    @ BenchmarkTools ~/.julia/packages/BenchmarkTools/1i1mY/src/execution.jl:181
+  [5] #invokelatest#2
+    @ ./essentials.jl:1055 [inlined]
+  [6] invokelatest
+    @ ./essentials.jl:1052 [inlined]
+  [7] #lineartrial#46
+    @ ~/.julia/packages/BenchmarkTools/1i1mY/src/execution.jl:51 [inlined]
+  [8] lineartrial
+    @ ~/.julia/packages/BenchmarkTools/1i1mY/src/execution.jl:50 [inlined]
+  [9] tune!(b::BenchmarkTools.Benchmark, p::BenchmarkTools.Parameters; progressid::Nothing, nleaves::Float64, ndone::Float64, verbose::Bool, pad::String, kwargs::@Kwargs{})
+    @ BenchmarkTools ~/.julia/packages/BenchmarkTools/1i1mY/src/execution.jl:299
+ [10] tune! (repeats 2 times)
+    @ ~/.julia/packages/BenchmarkTools/1i1mY/src/execution.jl:288 [inlined]
+ [11] macro expansion
+    @ ~/.julia/packages/BenchmarkTools/1i1mY/src/execution.jl:461 [inlined]
+ [12] benchmark()
+    @ Main ~/git/AiCode_DeepSeek/DGEMM/dgemm.jl:63
+ [13] top-level scope
+    @ ~/git/AiCode_DeepSeek/DGEMM/dgemm.jl:87
+in expression starting at /home/diehlpk/git/AiCode_DeepSeek/DGEMM/dgemm.jl:87
 ```
----
-
-## Julia Implementation
-
-### Execution
-```bash
-JULIA_NUM_THREADS=<NUM_THREADS> julia dgemm_benchmark.jl
-```
-### Execution
-```bash
-| Size | Block | Method    | Time (s) | GFLOPS  | Valid |
-|------|-------|-----------|----------|---------|-------|
-| 512 | - | BLAS | 0.045 | 240.15 | true |
-| 512 | 32 | Optimized | 0.152 | 71.32 | true |
-| 512 | 64 | Optimized | 0.138 | 78.64 | true |
-| 512 | 128 | Optimized | 0.145 | 74.89 | true |
-| 512 | - | Naive | 1.452 | 7.42 | true |
-| 1024 | - | BLAS | 0.342 | 623.82 | true |
-| 1024 | 32 | Optimized | 1.214 | 175.45 | true |
-| ... 
-```
----
-
-## Python Implementation
-
-### Execution
-```bash
-python dgemm_benchmark.py
-```
-### Execution
-```bash
-Size    Block  Method   Time (s)   GFLOPS     Valid
-============================================================
-512     32     Parallel 0.4523     118.32      True
-512     64     Parallel 0.4012     133.45      True
-512     128    Parallel 0.4231     126.52      True
-512     N/A    Naive    12.4523    4.31        True
-512     N/A    NumPy    0.1023     251.45      True
-1024    32     Parallel 3.4521     623.12      True
-... (continues for all sizes and configurations)
-```
----
-
-## Configuration Options
-
-1. **Matrix Sizes**: Modify in source files (`SIZES = [512, 1024, 2048]`)
-2. **Block Sizes**: Adjust in code (`BLOCK_SIZES = [32, 64, 128]`)
-3. **Methods**:
-   - Optimized (blocked parallel)
-   - Naive (simple triple loop)
-   - BLAS (vendor-optimized)
-4. **Thread Control**:
-   - Fortran: `OMP_NUM_THREADS`
-   - Julia: `JULIA_NUM_THREADS`
-
-## Dependencies
-- Fortran: OpenMP runtime
-- Julia: LinearAlgebra package, BLAS bindings
-- Python: NumPy (+BLAS backend for comparisons)
+>>>>>>> f7b3216 (Fix julia code and rename code)

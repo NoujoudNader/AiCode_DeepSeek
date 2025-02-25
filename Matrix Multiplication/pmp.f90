@@ -1,7 +1,7 @@
 program parallel_matmul
     use omp_lib
     implicit none
-    integer, parameter :: N = 512       ! Matrix dimension
+    integer, parameter :: N = 1000      ! Matrix dimension
     integer, parameter :: dp = kind(1.d0)
     real(dp), parameter :: tolerance = 1.0e-10_dp
     
@@ -28,14 +28,14 @@ program parallel_matmul
     
     ! Sequential matrix multiplication
     start_time = omp_get_wtime()
-    do i = 1, N
-        do j = 1, N
-            C_seq(i,j) = 0.0_dp
-            do k = 1, N
-                C_seq(i,j) = C_seq(i,j) + A(i,k) * B(k,j)
-            end do
-        end do
-    end do
+    !do i = 1, N
+    !    do j = 1, N
+    !        C_seq(i,j) = 0.0_dp
+    !        do k = 1, N
+    !            C_seq(i,j) = C_seq(i,j) + A(i,k) * B(k,j)
+    !        end do
+    !    end do
+    !end do
     end_time = omp_get_wtime()
     print '(A,F8.4,A)', 'Sequential time: ', end_time - start_time, ' s'
     

@@ -73,9 +73,9 @@ bool validate_result(const vector<vector<double>>& C1,
 }
 
 int main() {
-    const int N = 512;  // Rows of A and C
-    const int K = 512;  // Columns of A and rows of B
-    const int M = 512;  // Columns of B and C
+    const int N = 1000;  // Rows of A and C
+    const int K = 1000;  // Columns of A and rows of B
+    const int M = 1000;  // Columns of B and C
 
     // Initialize matrices
     vector<vector<double>> A(N, vector<double>(K));
@@ -95,7 +95,7 @@ int main() {
 
     // Perform sequential multiplication
     start = omp_get_wtime();
-    sequential_matrix_mult(A, B, C_seq);
+    //sequential_matrix_mult(A, B, C_seq);
     double seq_time = omp_get_wtime() - start;
     cout << "Sequential time: " << seq_time << " seconds\n";
 

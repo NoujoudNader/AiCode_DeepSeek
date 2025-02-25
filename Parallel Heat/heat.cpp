@@ -7,8 +7,8 @@
 int main() {
     // Parameters
     const double alpha = 0.1;
-    const double L = 1.0;
-    const int n = 100;
+    const double L = 100000.0;
+    const int n = 10000000;
     const double h = L / (n - 1);
     const double T = 0.1;
     const double dt = T / 1000;

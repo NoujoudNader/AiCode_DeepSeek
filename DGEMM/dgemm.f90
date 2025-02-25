@@ -59,17 +59,17 @@ end subroutine dgemm_optimized
 ! Validation function
 function validate(C1, C2, tolerance) result(is_valid)
     real(8), intent(in) :: C1(:,:), C2(:,:)
-    real(8), intent(in) :: tolerance
+    real(4), intent(in) :: tolerance
     logical :: is_valid
     real(8) :: diff
     integer :: i, j
     
-    is_valid = .true.
+    is_valid = .TRUE.
     !$OMP PARALLEL DO PRIVATE(i,j,diff) REDUCTION(.and.:is_valid)
     do j = 1, size(C1, 2)
         do i = 1, size(C1, 1)
             diff = abs(C1(i,j) - C2(i,j))
-            if (diff > tolerance) is_valid = .false.
+            if (diff > tolerance) is_valid = .FALSE.
         end do
     end do
     !$OMP END PARALLEL DO

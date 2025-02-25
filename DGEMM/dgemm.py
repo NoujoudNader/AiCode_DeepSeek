@@ -70,7 +70,7 @@ def benchmark(matrix_sizes=[512, 1024, 2048], block_sizes=[32, 64, 128]):
         for bs in block_sizes:
             C_parallel.fill(0.0)
             start = time.perf_counter()
-            dgemm_parallel(A, B, C_parallel, block_size=bs)
+            dgemm_parallel(A, B, C_parallel, bs)
             parallel_time = time.perf_counter() - start
             parallel_gflops = (2 * size**3) / parallel_time / 1e9
             valid = validate(ref, C_parallel)

@@ -53,6 +53,7 @@ function benchmark()
     println("|------|-------|-----------|----------|---------|-------|")
     
     for n in sizes
+        println(n)
         A = rand(n, n)
         B = rand(n, n)
         C_ref = A * B
@@ -60,7 +61,7 @@ function benchmark()
         C_opt = similar(A)
         
         # Benchmark BLAS
-        blas_time = @belapsed A * B
+        blas_time = @belapsed $A * $B
         blas_gflops = 2n^3 / blas_time / 1e9
         println("| $n | - | BLAS | $(round(blas_time, digits=4)) | $(round(blas_gflops, digits=2)) | true |")
         
@@ -72,7 +73,7 @@ function benchmark()
             println("| $n | $bs | Optimized | $(round(opt_time, digits=4)) | $(round(opt_gflops, digits=2)) | $valid |")
             fill!(C_opt, 0.0)
         end
-        
+        println(n)
         # Benchmark naive implementation
         if n <= 1024
             naive_time = @belapsed naive_dgemm!($C_naive, $A, $B)
