@@ -19,7 +19,7 @@ def dgemm_parallel(A, B, C, alpha=1.0, beta=0.0, block_size=64):
             Bt[j, i] = B[i, j]
     
     # Blocked matrix multiplication with parallelization
-    for ii in nb.prange(0, n, block_size):
+    for ii in nb.prange(n):
         for jj in range(0, n, block_size):
             for kk in range(0, n, block_size):
                 i_end = min(ii + block_size, n)
