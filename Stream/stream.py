@@ -5,9 +5,9 @@ import time
 def triad_worker(args):
     start, end, scalar, A_shm, B_shm, C_shm = args
     # Attach shared memory blocks to numpy arrays
-    A = np.frombuffer(A_shm.get_obj(), dtype=np.float64)
-    B = np.frombuffer(B_shm.get_obj(), dtype=np.float64)
-    C = np.frombuffer(C_shm.get_obj(), dtype=np.float64)
+    A = np.frombuffer(A_shm, dtype=np.float64)
+    B = np.frombuffer(B_shm, dtype=np.float64)
+    C = np.frombuffer(C_shm, dtype=np.float64)
     # Perform the triad operation on the assigned chunk
     A[start:end] = B[start:end] + scalar * C[start:end]
 
@@ -24,8 +24,8 @@ def main():
     
     # Initialize B and C using numpy for faster operations
     with mp.Pool(1) as pool:  # Use a single process for initialization
-        B_np = np.frombuffer(B_shm.get_obj(), dtype=np.float64)
-        C_np = np.frombuffer(C_shm.get_obj(), dtype=np.float64)
+        B_np = np.frombuffer(B_shm, dtype=np.float64)
+        C_np = np.frombuffer(C_shm, dtype=np.float64)
         B_np[:] = 1.0  # Initialize B with 1.0
         C_np[:] = 2.0  # Initialize C with 2.0
     
@@ -50,7 +50,7 @@ def main():
         p.join()
     
     # Verify results (optional)
-    A_np = np.frombuffer(A_shm.get_obj(), dtype=np.float64)
+    A_np = np.frombuffer(A_shm, dtype=np.float64)
     print("First 10 elements of A:", A_np[:10])
 
 if __name__ == '__main__':
