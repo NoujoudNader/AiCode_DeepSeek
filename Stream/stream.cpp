@@ -31,8 +31,10 @@ int main() {
     auto b = align_alloc(N);
     auto c = align_alloc(N);
 
+    auto b_p = b.get();
+    auto c_p = c.get();
     // Initialize arrays in parallel
-    #pragma omp parallel for simd aligned(b, c: 64)
+    #pragma omp parallel for simd aligned(b_p, c_p: 64)
     for (size_t i = 0; i < N; ++i) {
         b[i] = 1.0;
         c[i] = 2.0;

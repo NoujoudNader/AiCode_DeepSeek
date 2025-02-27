@@ -6,15 +6,15 @@ program stream_triad
     real(real64), allocatable :: A(:), B(:), C(:)
     integer(int64) :: chunk_size, i
     real(real64) :: start_time, end_time
-    integer :: num_images, me, ierr
+    integer :: num_image, me, ierr
     
     ! Initialize parallel environment
-    num_images = num_images()
+    num_image = num_images()
     me = this_image()
     
     ! Calculate chunk size with load balancing
-    chunk_size = N / num_images
-    if (me <= mod(N, num_images)) chunk_size = chunk_size + 1
+    chunk_size = N / num_image
+    if (me <= mod(N, num_image)) chunk_size = chunk_size + 1
     
     ! Allocate aligned memory (assuming compiler supports alignment)
     allocate(A(chunk_size), B(chunk_size), C(chunk_size), stat=ierr)
@@ -38,7 +38,7 @@ program stream_triad
     if (me == 1) then
         call cpu_time(end_time)
         print '(a)', 'STREAM Triad Benchmark Results:'
-        print '(a,i0)', ' Number of images: ', num_images
+        print '(a,i0)', ' Number of images: ', num_image
         print '(a,i0,a)', ' Array size: ', N, ' elements per array'
         print '(a,f6.3,a)', ' Total time: ', end_time - start_time, ' seconds'
         print '(a,f6.1,a)', ' Bandwidth: ', &
