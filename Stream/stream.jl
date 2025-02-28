@@ -2,12 +2,12 @@ using Base.Threads
 
 function stream_triad!(A, B, C, scalar)
     n = length(A)
-    nthreads = nthreads()
-    chunksize = div(n, nthreads)
+    nthread = nthreads()
+    chunksize = div(n, nthread)
     
-    @threads for tid in 1:nthreads
+    @threads for tid in 1:nthread
         start = (tid-1)*chunksize + 1
-        stop = tid == nthreads ? n : tid*chunksize
+        stop = tid == nthread ? n : tid*chunksize
         @inbounds @simd for i in start:stop
             A[i] = B[i] + scalar * C[i]
         end
